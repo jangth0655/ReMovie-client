@@ -29,6 +29,7 @@ declare module "styled-components" {
       light: number;
     };
     fontSize: {
+      superBig: string;
       big: string;
       medium: string;
       small: string;

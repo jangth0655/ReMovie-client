@@ -21,6 +21,7 @@ const theme: DefaultTheme = {
     main: "0.375rem",
   },
   fontSize: {
+    superBig: "2rem",
     big: "1.25rem",
     medium: "1rem",
     small: "0.875rem",

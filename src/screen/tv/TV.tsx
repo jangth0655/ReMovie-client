@@ -3,8 +3,8 @@ import Layout from "../../components/layout";
 
 const TV: React.FC = () => {
   return (
-    <Layout>
-      <h1>home</h1>
+    <Layout title="TV">
+      <h1>Tv</h1>
     </Layout>
   );
 };

@@ -1,20 +1,20 @@
 import { motion, Variants } from "framer-motion";
 import React, { useState, useEffect, useCallback } from "react";
+import { Helmet } from "react-helmet-async";
 import { Link, useMatch } from "react-router-dom";
 import styled from "styled-components";
 
 interface LayoutProps {
   children: React.ReactNode;
   showing?: boolean;
+  title?: string;
 }
 
 const Section = styled.section`
   padding: 0 0.5rem;
-  min-height: 100vh;
 `;
 
 const Nav = styled.nav`
-  /* border: 1px solid white; */
   position: fixed;
   width: 100%;
   display: flex;
@@ -131,8 +131,7 @@ const AcTiveNavName = styled.div`
 `;
 
 const Main = styled.main`
-  padding-top: 5rem;
-  min-height: 100vh;
+  padding: 2rem 1.5rem 0 1.5rem;
 `;
 
 const PageMark = styled(motion.div)`
@@ -173,7 +172,7 @@ const searchVariant: Variants = {
   }),
 };
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout: React.FC<LayoutProps> = ({ children, title }) => {
   const homeMatch = useMatch(`/`);
   const tvMatch = useMatch(`/tv`);
   const [active, setActive] = useState(false);
@@ -207,6 +206,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <Section>
+      <Helmet>
+        <title>{title} | Movie</title>
+      </Helmet>
       <Nav>
         {smallWindow ? (
           <Svg

@@ -10,6 +10,7 @@ export const GlobalStyles = createGlobalStyle`
     font-family: 'Open Sans', sans-serif;
     background-color: #0D0E10;
     color: rgb(243 244 246);
+    line-height: 1.3;
   }
   input { 
     border: 0;
