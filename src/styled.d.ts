@@ -15,6 +15,7 @@ declare module "styled-components" {
       };
       active: {
         strong: string;
+        medium: string;
         light: string;
       };
     };
@@ -38,6 +39,16 @@ declare module "styled-components" {
       md: string;
       lg: string;
       xl: string;
+    };
+    gap: {
+      superBig: string;
+      big: string;
+      medium: string;
+      small: string;
+      micro: string;
+    };
+    transition: {
+      all: string;
     };
   }
 }

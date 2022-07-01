@@ -8,11 +8,12 @@ const theme: DefaultTheme = {
       main: "rgb(243 244 246)",
     },
     bgColor: {
-      main: "rgb(31 41 55)",
+      main: "#0D0E10",
     },
     active: {
-      strong: "#117AF0",
-      light: "#172F45",
+      strong: "#FA005A", //#CE0054
+      medium: "#FB005A",
+      light: "rgb(236 72 153)",
     },
   },
   borderRadius: {
@@ -35,6 +36,16 @@ const theme: DefaultTheme = {
     md: "768px",
     lg: "1024px",
     xl: "1280px",
+  },
+  gap: {
+    superBig: "2.5rem",
+    big: "2rem",
+    medium: "1.5rem",
+    small: "1rem",
+    micro: "0.5rem",
+  },
+  transition: {
+    all: "all 200ms cubic-bezier(0.4, 0, 0.2, 1)",
   },
 };
 
