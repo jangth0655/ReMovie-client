@@ -24,7 +24,7 @@ const QuestionBox = styled.div`
 
 const ImageBox = styled.div`
   width: 50%;
-  height: 24rem;
+  height: 22rem;
 `;
 const Image = styled.div`
   width: 100%;

@@ -142,7 +142,6 @@ const Main = styled.main`
 
 const PageMark = styled(motion.div)`
   position: absolute;
-  width: 100%;
   width: 0.4rem;
   height: 0.4rem;
   right: 0;
@@ -179,8 +178,8 @@ const searchVariant: Variants = {
 };
 
 const Layout: React.FC<LayoutProps> = ({ children, title }) => {
-  const homeMatch = useMatch(`/`);
-  const tvMatch = useMatch(`/tv`);
+  const homeMatch = useMatch("/");
+  const tvMatch = useMatch("/tv");
   const [active, setActive] = useState(false);
   const [search, setSearch] = useState(false);
   const [windowSize, setWindowSize] = useState<number>(0);
