@@ -1,25 +1,44 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
+import BigTitle from "../components/BigTitle";
 import Layout from "../components/layout";
+import Questions from "../components/Question/Questions";
+import { Button } from "../components/Shared";
+import Slider from "../components/Slider";
+import Tariff from "../components/Tariff";
 
-const Section = styled.section`
-  min-height: 100vh;
-`;
+const Section = styled.section``;
+
 const Topic = styled.div`
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  flex-direction: column;
+
   @media screen and (max-width: 768px) {
     flex-direction: column;
   }
 `;
+
+const TopicContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: ${(props) => props.theme.gap.superBig};
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
 const TopicSpanBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   padding-right: ${(props) => props.theme.gap.big};
-  width: 50%;
+  width: 100%;
   @media screen and (max-width: 768px) {
     align-items: center;
     justify-content: center;
@@ -55,28 +74,17 @@ const PlanBox = styled.div`
     width: 50%;
   }
 `;
-const Subscribe = styled.span`
-  font-size: ${(props) => props.theme.fontSize.small};
-  border: 2px solid ${(props) => props.theme.color.active.strong};
-  border-radius: ${(props) => props.theme.borderRadius.lg};
-  padding: 0.5rem 1rem;
-  transition: ${(props) => props.theme.transition.all};
-  cursor: pointer;
-  &:hover {
-    background-color: ${(props) => props.theme.color.active.strong};
-  }
-`;
+const Question = styled(Button)``;
 
-const Tariff = styled(Subscribe)`
+const GoTariff = styled(Button)`
   margin-left: ${(props) => props.theme.gap.big};
 `;
 
 const TitleImageBox = styled.div`
-  border: 1px solid white;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50%;
+  width: 100%;
   @media screen and (max-width: 768px) {
     width: 100%;
   }
@@ -90,80 +98,95 @@ const TitleImage = styled.div`
   }
 `;
 
-const Main = styled.main``;
-
-const SliderContainer = styled.div``;
-
-const SliderTitleBox = styled.div`
-  padding: 1rem 0;
-`;
-const SliderTitle = styled.span`
-  font-weight: ${(props) => props.theme.fontWeight.bold};
-  font-size: ${(props) => props.theme.fontSize.big};
-`;
-
-const Slider = styled.div`
-  position: relative;
-`;
-const RowItems = styled.div`
-  position: absolute;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 0.3em;
+const SliderContainer = styled.div`
   width: 100%;
-  border: 1px solid white;
 `;
-const RowItem = styled.div`
-  width: 100%;
-  height: 12.5rem;
-  background-color: blue;
+
+const Main = styled.main`
+  margin-bottom: ${(props) => props.theme.gap.superBig};
 `;
-const ItemImage = styled.div``;
-const ItemTitle = styled.div``;
+
+const TariffContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const QuestionContainer = styled.div``;
+
+const TariffBox = styled.div`
+  & :nth-of-type(1n) {
+    margin-right: 0.5rem;
+  }
+  @media screen and (max-width: 1024px) {
+    flex-direction: column;
+  }
+`;
 
 const Home: React.FC = () => {
+  const tariffRef = useRef<HTMLDivElement>(null);
+  const questionRef = useRef<HTMLDivElement>(null);
+
+  const scrollTariff = () => {
+    tariffRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const scrollQuestion = () => {
+    questionRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <Layout title="Main">
       <Section>
         <Topic>
-          <TopicSpanBox>
-            <TopicTitleBox>
-              <TopicSpan>
-                Movie, TV shows and much more without limits
-              </TopicSpan>
-            </TopicTitleBox>
-            <PlanBox>
-              <Subscribe>Subscribe</Subscribe>
-              <Tariff>Tariff</Tariff>
-            </PlanBox>
-          </TopicSpanBox>
+          <TopicContainer>
+            <TopicSpanBox>
+              <TopicTitleBox>
+                <TopicSpan>
+                  Movie, TV shows and much more without limits
+                </TopicSpan>
+              </TopicTitleBox>
+              <PlanBox>
+                <Question onClick={scrollQuestion}>Question</Question>
+                <GoTariff onClick={scrollTariff}>Tariff</GoTariff>
+              </PlanBox>
+            </TopicSpanBox>
 
-          <TitleImageBox>
-            <TitleImage></TitleImage>
-          </TitleImageBox>
+            <TitleImageBox>
+              <TitleImage></TitleImage>
+            </TitleImageBox>
+          </TopicContainer>
+
+          {/* slider popular */}
+          <SliderContainer>
+            <div>
+              <BigTitle title="Popular" />
+              <Slider />
+            </div>
+            <div>
+              <BigTitle title="Upcoming" />
+              <Slider />
+            </div>
+          </SliderContainer>
+          {/* slider upcoming  */}
         </Topic>
 
         <Main>
-          {/* slider popular */}
-          <SliderContainer>
-            <SliderTitleBox>
-              <SliderTitle>Popular</SliderTitle>
-            </SliderTitleBox>
-            <Slider>
-              <RowItems>
-                {[1, 2, 3, 4, 5, 6].map((item, i) => (
-                  <RowItem key={i}>
-                    <ItemImage></ItemImage>
-                    <ItemTitle>{i}</ItemTitle>
-                  </RowItem>
-                ))}
-              </RowItems>
-            </Slider>
-          </SliderContainer>
-          {/* slider upcoming  */}
-
           {/* Tariff plans */}
-          {/* Frequently asked question */}
+          <TariffContainer ref={tariffRef}>
+            <BigTitle title="Tariff plans" />
+            <TariffBox style={{ display: "flex" }}>
+              <Tariff title="Base" price={8.99} />
+              <Tariff title="Comfort" price={10.99} />
+              <Tariff title="Premium" price={14.99} />
+            </TariffBox>
+          </TariffContainer>
+        </Main>
+        {/* Frequently asked question */}
+        <Main>
+          <QuestionContainer ref={questionRef}>
+            <BigTitle title="Frequently asked questions" />
+            <Questions />
+          </QuestionContainer>
         </Main>
       </Section>
     </Layout>

@@ -16,7 +16,6 @@ const Section = styled.section`
 
 const Nav = styled.nav`
   position: fixed;
-  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -91,8 +90,14 @@ const Title = styled.span`
   }
 `;
 
-const HomePage = styled(Title)``;
-const TVPage = styled(Title)``;
+const HomePage = styled(Title)`
+  color: ${(props) => props.theme.color.text.main};
+  font-weight: ${(props) => props.theme.fontWeight.bold};
+`;
+const TVPage = styled(Title)`
+  color: ${(props) => props.theme.color.text.main};
+  font-weight: ${(props) => props.theme.fontWeight.bold};
+`;
 
 const Svg = styled.svg`
   cursor: pointer;
@@ -105,9 +110,10 @@ const ActiveNavContainer = styled(motion.div)`
   display: flex;
   height: 6rem;
   width: 100%;
-  top: 2rem;
+  top: 2.5rem;
   flex-direction: column;
   transform-origin: top center;
+  left: 0;
 `;
 
 const ActiveNav = styled.div`
@@ -245,12 +251,26 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
             animate="animate"
             custom={active}
           >
+            <div
+              style={{
+                position: "absolute",
+                backgroundColor: "rgba(0,0,0,0.9)",
+                width: "100%",
+                height: "100%",
+                borderRadius: 10,
+                zIndex: 1,
+              }}
+            ></div>
             <ActiveNav>
               <AcTiveNavName>
-                <HomePage>Main</HomePage>
+                <Link to="/">
+                  <HomePage>Main</HomePage>
+                </Link>
               </AcTiveNavName>
               <AcTiveNavName>
-                <TVPage>TV</TVPage>
+                <Link to="/tv">
+                  <TVPage>TV</TVPage>
+                </Link>
               </AcTiveNavName>
             </ActiveNav>
           </ActiveNavContainer>
