@@ -6,6 +6,27 @@ import Questions from "../components/Question/Questions";
 import { Button } from "../components/Shared";
 import Slider from "../components/Slider";
 import Tariff from "../components/Tariff";
+import { gql, useQuery } from "@apollo/client";
+import { Movie } from "../interface/movie_interface";
+
+const POPULAR_MOVIE = gql`
+  query popularMovies {
+    popularMovies {
+      results {
+        poster_path
+        backdrop_path
+        overview
+        id
+        original_title
+        title
+        vote_count
+        video
+        vote_average
+        release_date
+      }
+    }
+  }
+`;
 
 const Section = styled.section``;
 
@@ -122,9 +143,15 @@ const TariffBox = styled.div`
   }
 `;
 
+interface PopularMovie {
+  popularMovies: Movie;
+}
+
 const Home: React.FC = () => {
   const tariffRef = useRef<HTMLDivElement>(null);
   const questionRef = useRef<HTMLDivElement>(null);
+  const { data, loading } = useQuery<PopularMovie>(POPULAR_MOVIE);
+  console.log(data);
 
   const scrollTariff = () => {
     tariffRef.current?.scrollIntoView({ behavior: "smooth" });

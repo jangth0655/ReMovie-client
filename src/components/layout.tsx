@@ -1,7 +1,12 @@
-import { motion, Variants } from "framer-motion";
+import {
+  motion,
+  useAnimation,
+  useViewportScroll,
+  Variants,
+} from "framer-motion";
 import React, { useState, useEffect, useCallback } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link, useMatch } from "react-router-dom";
+import { Link, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 interface LayoutProps {
@@ -11,16 +16,25 @@ interface LayoutProps {
 }
 
 const Section = styled.section`
-  padding: 0 0.5rem;
+  position: relative;
 `;
 
-const Nav = styled.nav`
+const Nav = styled(motion.nav)`
   position: fixed;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
   padding: ${(props) => props.theme.gap.micro} 1.5rem;
+  z-index: 100;
+`;
+
+const NavLayer = styled.div`
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
 `;
 
 const Col = styled.div`
@@ -137,7 +151,7 @@ const AcTiveNavName = styled.div`
 `;
 
 const Main = styled.main`
-  padding: 2rem 1.5rem 0 1.5rem;
+  padding: 6rem 1.5rem 0 1.5rem;
 `;
 
 const PageMark = styled(motion.div)`
@@ -177,12 +191,34 @@ const searchVariant: Variants = {
   }),
 };
 
+const navScrollVar: Variants = {
+  top: {
+    backgroundColor: "rgba(0,0,0,0)",
+  },
+  scroll: {
+    backgroundColor: "rgba(0,0,0,0.9)",
+  },
+};
+
 const Layout: React.FC<LayoutProps> = ({ children, title }) => {
   const homeMatch = useMatch("/");
   const tvMatch = useMatch("/tv");
   const [active, setActive] = useState(false);
   const [search, setSearch] = useState(false);
   const [windowSize, setWindowSize] = useState<number>(0);
+  const navigate = useNavigate();
+  const navAnimation = useAnimation();
+  const { scrollY } = useViewportScroll();
+
+  useEffect(() => {
+    scrollY.onChange(() => {
+      if (scrollY.get() > 100) {
+        navAnimation.start("scroll");
+      } else {
+        navAnimation.start("top");
+      }
+    });
+  }, [navAnimation, scrollY]);
 
   const onSearch = () => {
     setSearch((prev) => !prev);
@@ -209,12 +245,21 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
 
   const smallWindow = windowSize < 769;
 
+  const onHome = () => {
+    navigate("/");
+  };
+
+  const onTV = () => {
+    navigate("/tv");
+  };
+
   return (
     <Section>
       <Helmet>
         <title>{title} | Movie</title>
       </Helmet>
-      <Nav>
+      <Nav variants={navScrollVar} initial="top" animate={navAnimation}>
+        {/* <NavLayer /> */}
         {smallWindow ? (
           <Svg
             onClick={() => showingNavTitle()}
@@ -231,14 +276,13 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
               <Name>Movie</Name>
             </LogoName>
             <NavTitle>
-              <Link to="/">
-                <HomePage>
-                  Main {homeMatch && <PageMark layoutId="circle" />}
-                </HomePage>
-              </Link>
-              <Link to="/tv">
-                <TVPage>TV {tvMatch && <PageMark layoutId="circle" />}</TVPage>
-              </Link>
+              <HomePage onClick={() => onHome()}>
+                Main {homeMatch && <PageMark layoutId="circle" />}
+              </HomePage>
+
+              <TVPage onClick={() => onTV()}>
+                TV {tvMatch && <PageMark layoutId="circle" />}
+              </TVPage>
             </NavTitle>
           </Col>
         )}
