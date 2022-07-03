@@ -3,8 +3,8 @@ import { DefaultTheme } from "styled-components";
 const theme: DefaultTheme = {
   color: {
     text: {
-      dark: "rgb(107 114 128)",
-      medium: "rgb(229 231 235)",
+      dark: "rgb(156 163 175)",
+      medium: "rgb(209 213 219)",
       main: "rgb(243 244 246)",
     },
     bgColor: {
