@@ -29,14 +29,6 @@ const Nav = styled(motion.nav)`
   z-index: 100;
 `;
 
-const NavLayer = styled.div`
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
-`;
-
 const Col = styled.div`
   flex: 1;
   display: flex;

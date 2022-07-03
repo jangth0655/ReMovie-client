@@ -7,7 +7,11 @@ const QuestionItem = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin-bottom: ${(props) => props.theme.gap.superBig};
+  align-items: center;
+  margin-bottom: ${(props) => props.theme.gap.big};
+  &:last-child {
+    margin-bottom: 0;
+  }
 `;
 
 const QuestionCF = styled.span``;

@@ -7,7 +7,6 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   padding: 1rem 0;
-  display: flex;
   width: 100%;
   @media screen and (max-width: 768px) {
     flex-direction: column;
@@ -18,7 +17,7 @@ const QuestionBox = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-right: ${(props) => props.theme.gap.big};
+  padding-right: ${(props) => props.theme.gap.superBig};
   width: 50%;
 `;
 

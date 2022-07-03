@@ -51,5 +51,9 @@ declare module "styled-components" {
     transition: {
       all: string;
     };
+    shadow: {
+      lg: string;
+      xl: string;
+    };
   }
 }

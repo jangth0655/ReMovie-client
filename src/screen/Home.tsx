@@ -3,7 +3,7 @@ import styled from "styled-components";
 import BigTitle from "../components/BigTitle";
 import Layout from "../components/layout";
 import Questions from "../components/Question/Questions";
-import { Button } from "../components/Shared";
+import { Button, ImageUrl } from "../components/Shared";
 import Slider from "../components/Slider";
 import Tariff from "../components/Tariff";
 import { gql, useQuery } from "@apollo/client";
@@ -13,16 +13,25 @@ const POPULAR_MOVIE = gql`
   query popularMovies {
     popularMovies {
       results {
-        poster_path
         backdrop_path
-        overview
+        poster_path
         id
-        original_title
-        title
-        vote_count
-        video
         vote_average
-        release_date
+        title
+      }
+    }
+  }
+`;
+
+const UPCOMING_MOVIE = gql`
+  query upcomingMovies {
+    upcomingMovies {
+      results {
+        backdrop_path
+        poster_path
+        id
+        vote_average
+        title
       }
     }
   }
@@ -110,10 +119,14 @@ const TitleImageBox = styled.div`
     width: 100%;
   }
 `;
-const TitleImage = styled.div`
+const TitleImage = styled.div<{ titlePhoto?: string }>`
+  border-radius: ${(props) => props.theme.borderRadius.lg};
   width: 100%;
   height: 36rem;
-  background-color: red;
+  background-color: ${(props) => props.theme.color.bgColor};
+  background-size: cover;
+  background-position: center center;
+  background-image: url(${(props) => props.titlePhoto});
   @media screen and (max-width: 1024px) {
     height: 24rem;
   }
@@ -146,12 +159,19 @@ const TariffBox = styled.div`
 interface PopularMovie {
   popularMovies: Movie;
 }
+interface UpcomingMovie {
+  upcomingMovies: Movie;
+}
 
 const Home: React.FC = () => {
   const tariffRef = useRef<HTMLDivElement>(null);
   const questionRef = useRef<HTMLDivElement>(null);
-  const { data, loading } = useQuery<PopularMovie>(POPULAR_MOVIE);
-  console.log(data);
+  const { data: popularData, loading: popularLoading } =
+    useQuery<PopularMovie>(POPULAR_MOVIE);
+  const { data: upcomingData, loading: upcomingLoading } =
+    useQuery<UpcomingMovie>(UPCOMING_MOVIE);
+
+  const loading = popularLoading || upcomingLoading;
 
   const scrollTariff = () => {
     tariffRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -163,59 +183,69 @@ const Home: React.FC = () => {
 
   return (
     <Layout title="Main">
-      <Section>
-        <Topic>
-          <TopicContainer>
-            <TopicSpanBox>
-              <TopicTitleBox>
-                <TopicSpan>
-                  Movie, TV shows and much more without limits
-                </TopicSpan>
-              </TopicTitleBox>
-              <PlanBox>
-                <Question onClick={scrollQuestion}>Question</Question>
-                <GoTariff onClick={scrollTariff}>Tariff</GoTariff>
-              </PlanBox>
-            </TopicSpanBox>
+      {loading ? (
+        <h1>Loading...</h1>
+      ) : (
+        <Section>
+          <Topic>
+            <TopicContainer>
+              <TopicSpanBox>
+                <TopicTitleBox>
+                  <TopicSpan>
+                    Movie, TV shows and much more without limits
+                  </TopicSpan>
+                </TopicTitleBox>
+                <PlanBox>
+                  <Question onClick={scrollQuestion}>Question</Question>
+                  <GoTariff onClick={scrollTariff}>Tariff</GoTariff>
+                </PlanBox>
+              </TopicSpanBox>
 
-            <TitleImageBox>
-              <TitleImage></TitleImage>
-            </TitleImageBox>
-          </TopicContainer>
+              <TitleImageBox>
+                <TitleImage
+                  titlePhoto={ImageUrl(
+                    popularData?.popularMovies.results
+                      ? popularData?.popularMovies.results[0].backdrop_path
+                      : ""
+                  )}
+                />
+              </TitleImageBox>
+            </TopicContainer>
 
-          {/* slider popular */}
-          <SliderContainer>
-            <div>
-              <BigTitle title="Popular" />
-              <Slider />
-            </div>
-            <div>
-              <BigTitle title="Upcoming" />
-              <Slider />
-            </div>
-          </SliderContainer>
-          {/* slider upcoming  */}
-        </Topic>
+            {/* slider popular */}
+            <SliderContainer>
+              <div>
+                <BigTitle title="Popular" />
+                <Slider results={popularData?.popularMovies.results} />
+              </div>
+              <div>
+                <BigTitle title="Upcoming" />
+                <Slider results={upcomingData?.upcomingMovies.results} />
+              </div>
+            </SliderContainer>
+            {/* slider upcoming  */}
+          </Topic>
 
-        <Main>
-          {/* Tariff plans */}
-          <TariffContainer ref={tariffRef}>
-            <BigTitle title="Tariff plans" />
-            <TariffBox style={{ display: "flex" }}>
-              <Tariff title="Base" price={8.99} />
-              <Tariff title="Comfort" price={10.99} />
-              <Tariff title="Premium" price={14.99} />
-            </TariffBox>
-          </TariffContainer>
-        </Main>
-        {/* Frequently asked question */}
-        <Main>
-          <QuestionContainer ref={questionRef}>
-            <BigTitle title="Frequently asked questions" />
-            <Questions />
-          </QuestionContainer>
-        </Main>
-      </Section>
+          <Main>
+            {/* Tariff plans */}
+            <TariffContainer ref={tariffRef}>
+              <BigTitle title="Tariff plans" />
+              <TariffBox style={{ display: "flex" }}>
+                <Tariff title="Base" price={8.99} />
+                <Tariff title="Comfort" price={10.99} />
+                <Tariff title="Premium" price={14.99} />
+              </TariffBox>
+            </TariffContainer>
+          </Main>
+          {/* Frequently asked question */}
+          <Main>
+            <QuestionContainer ref={questionRef}>
+              <BigTitle title="Frequently asked questions" />
+              <Questions />
+            </QuestionContainer>
+          </Main>
+        </Section>
+      )}
     </Layout>
   );
 };

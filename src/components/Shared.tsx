@@ -14,3 +14,7 @@ export const Button = styled.span`
     background-color: ${(props) => props.theme.color.active.strong};
   }
 `;
+
+export const ImageUrl = (path: string, size?: string) => {
+  return `https://image.tmdb.org/t/p/${size ? size : "original"}${path}`;
+};
