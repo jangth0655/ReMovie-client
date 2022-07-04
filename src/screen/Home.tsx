@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import BigTitle from "../components/BigTitle";
 import Layout from "../components/layout";
@@ -8,6 +8,12 @@ import Slider from "../components/Slider";
 import Tariff from "../components/Tariff";
 import { gql, useQuery } from "@apollo/client";
 import { Movie } from "../interface/movie_interface";
+import {
+  motion,
+  useAnimation,
+  useViewportScroll,
+  Variants,
+} from "framer-motion";
 
 const POPULAR_MOVIE = gql`
   query popularMovies {
@@ -142,7 +148,39 @@ const TariffContainer = styled.div`
 
 const QuestionContainer = styled.div``;
 
+const ScrollUp = styled(motion.div)`
+  cursor: pointer;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2rem;
+  height: 2rem;
+  bottom: ${(props) => props.theme.gap.superBig};
+  right: ${(props) => props.theme.gap.small};
+  border-radius: 50%;
+  background-color: ${(props) => props.theme.color.active.medium};
+  transition: ${(props) => props.theme.transition.all};
+  &:hover {
+    background-color: ${(props) => props.theme.color.active.strong};
+  }
+`;
+const ScrollUpIcon = styled.svg`
+  width: 1.5rem;
+  height: 1.5rem;
+`;
+
+const scrollVar: Variants = {
+  top: {
+    opacity: 0,
+  },
+  scroll: {
+    opacity: 1,
+  },
+};
+
 const TariffBox = styled.div`
+  align-items: center;
   & :nth-of-type(1n) {
     margin-right: 0.5rem;
   }
@@ -161,6 +199,7 @@ interface UpcomingMovie {
 const Home: React.FC = () => {
   const tariffRef = useRef<HTMLDivElement>(null);
   const questionRef = useRef<HTMLDivElement>(null);
+  const TopicRef = useRef<HTMLDivElement>(null);
   const { data: popularData, loading: popularLoading } =
     useQuery<PopularMovie>(POPULAR_MOVIE);
   const { data: upcomingData, loading: upcomingLoading } =
@@ -169,12 +208,29 @@ const Home: React.FC = () => {
   const loading = popularLoading || upcomingLoading;
 
   const scrollTariff = () => {
-    tariffRef.current?.scrollIntoView({ behavior: "smooth" });
+    tariffRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
   const scrollQuestion = () => {
     questionRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  const scrollTopic = () => {
+    TopicRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const scrollAnimation = useAnimation();
+  const { scrollY } = useViewportScroll();
+
+  useEffect(() => {
+    scrollY.onChange(() => {
+      if (scrollY.get() < window.innerHeight / 2) {
+        scrollAnimation.start("top");
+      } else {
+        scrollAnimation.start("scroll");
+      }
+    });
+  }, [scrollY, scrollAnimation]);
 
   return (
     <Layout title="Main">
@@ -182,7 +238,7 @@ const Home: React.FC = () => {
         <h1>Loading...</h1>
       ) : (
         <Section>
-          <Topic>
+          <Topic ref={TopicRef}>
             <TopicContainer>
               <TopicSpanBox>
                 <TopicTitleBox>
@@ -241,6 +297,16 @@ const Home: React.FC = () => {
           </Main>
         </Section>
       )}
+      <ScrollUp
+        onClick={scrollTopic}
+        variants={scrollVar}
+        initial="top"
+        animate={scrollAnimation}
+      >
+        <ScrollUpIcon fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path d="M8 7l4-4m0 0l4 4m-4-4v18" />
+        </ScrollUpIcon>
+      </ScrollUp>
     </Layout>
   );
 };
