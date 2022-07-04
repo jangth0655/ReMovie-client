@@ -1,5 +1,19 @@
 import { Genres } from "./shared";
 
+interface Cast {
+  id: number;
+  profile_path: string;
+  cast_id: string;
+  character: string;
+  name: string;
+  original_name: string;
+}
+
+export interface MovieCast {
+  id: number;
+  cast: Cast[];
+}
+
 export interface MovieDetail {
   id: number;
   poster_path: string;
@@ -10,6 +24,8 @@ export interface MovieDetail {
   title: string;
   video: boolean;
   vote_average: number;
+  release_date: string;
+  overview: string;
 }
 
 export interface MovieResult {

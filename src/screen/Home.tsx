@@ -3,7 +3,7 @@ import styled from "styled-components";
 import BigTitle from "../components/BigTitle";
 import Layout from "../components/layout";
 import Questions from "../components/Question/Questions";
-import { Button, ImageUrl } from "../components/Shared";
+import { Button, ImageUrl, Main } from "../components/Shared";
 import Slider from "../components/Slider";
 import Tariff from "../components/Tariff";
 import { gql, useQuery } from "@apollo/client";
@@ -45,7 +45,6 @@ const Topic = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-
   @media screen and (max-width: 768px) {
     flex-direction: column;
   }
@@ -134,10 +133,6 @@ const TitleImage = styled.div<{ titlePhoto?: string }>`
 
 const SliderContainer = styled.div`
   width: 100%;
-`;
-
-const Main = styled.main`
-  margin-bottom: ${(props) => props.theme.gap.superBig};
 `;
 
 const TariffContainer = styled.div`

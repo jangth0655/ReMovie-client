@@ -18,3 +18,11 @@ export const Button = styled.span`
 export const ImageUrl = (path: string, size?: string) => {
   return `https://image.tmdb.org/t/p/${size ? size : "original"}${path}`;
 };
+
+export const Main = styled.main`
+  margin-bottom: ${(props) => props.theme.gap.superBig};
+`;
+
+export const playVideo = (key: string) => {
+  return `https://www.youtube.com/embed/${key}`;
+};

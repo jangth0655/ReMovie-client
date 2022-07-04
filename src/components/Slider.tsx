@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { MovieResult } from "../interface/movie_interface";
 import { ImageUrl } from "./Shared";
 import { motion, AnimatePresence, Variants } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const SliderContainer = styled.div`
   margin-bottom: ${(props) => props.theme.gap.superBig};
@@ -94,6 +95,11 @@ const OFFSET = 5;
 const Slider: React.FC<SliderProps> = ({ results }) => {
   const [page, setPage] = useState(0);
   const [back, setBack] = useState(false);
+  const navigate = useNavigate();
+
+  const onAboutMovie = (id: number) => {
+    navigate(`/movies/${id}`);
+  };
 
   const onPage = () => {
     if (results) {
@@ -150,7 +156,7 @@ const Slider: React.FC<SliderProps> = ({ results }) => {
             {results
               ?.slice(OFFSET * page, OFFSET * page + OFFSET)
               .map((item) => (
-                <RowItem key={item.id}>
+                <RowItem onClick={() => onAboutMovie(item.id)} key={item.id}>
                   <ImageContainer>
                     <ItemImage post={ImageUrl(item.poster_path)} />
                   </ImageContainer>

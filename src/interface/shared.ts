@@ -11,3 +11,14 @@ export interface Cast {
   name: string;
   original_name: string;
 }
+
+export interface VideoResult {
+  name: string;
+  key: string;
+  id: string;
+}
+
+export interface Video {
+  id: number;
+  results: VideoResult[];
+}

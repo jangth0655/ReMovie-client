@@ -8,6 +8,7 @@ import Home from "./screen/Home";
 import TV from "./screen/tv/TV";
 import { GlobalStyles } from "./styles";
 import { theme } from "./theme";
+import AboutMovie from "./screen/movie/MovieDetail";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/tv" element={<TV />} />
+              <Route path="/movies/:id" element={<AboutMovie />} />
             </Routes>
           </BrowserRouter>
         </ThemeProvider>
