@@ -26,7 +26,7 @@ export interface TVDetail {
 export interface TVResults {
   poster_path: string;
   backdrop_path: string;
-  first_air_date: string;
+  /* first_air_date: string; */
   vote_average: number;
   overview: string;
   id: number;

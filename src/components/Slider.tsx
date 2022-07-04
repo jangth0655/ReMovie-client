@@ -4,6 +4,7 @@ import { MovieResult } from "../interface/movie_interface";
 import { ImageUrl } from "./Shared";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { TVResults } from "../interface/TV_interface";
 
 const SliderContainer = styled.div`
   margin-bottom: ${(props) => props.theme.gap.superBig};
@@ -76,7 +77,8 @@ const DirectionIcon = styled.svg`
 `;
 
 interface SliderProps {
-  results?: MovieResult[];
+  movieResults?: MovieResult[];
+  TVresults?: TVResults[];
 }
 
 const rowVariant: Variants = {
@@ -92,7 +94,7 @@ const rowVariant: Variants = {
 };
 
 const OFFSET = 5;
-const Slider: React.FC<SliderProps> = ({ results }) => {
+const Slider: React.FC<SliderProps> = ({ movieResults, TVresults }) => {
   const [page, setPage] = useState(0);
   const [back, setBack] = useState(false);
   const navigate = useNavigate();
@@ -101,9 +103,13 @@ const Slider: React.FC<SliderProps> = ({ results }) => {
     navigate(`/movies/${id}`);
   };
 
+  const onTVDetail = (id: number) => {
+    navigate(`/tvs/${id}`);
+  };
+
   const onPage = () => {
-    if (results) {
-      const totalMovies = results?.length - 1;
+    if (movieResults) {
+      const totalMovies = movieResults?.length - 1;
       const maxPage = Math.floor(totalMovies / OFFSET);
       back
         ? setPage((prev) => (prev === 0 ? maxPage : prev - 1))
@@ -153,16 +159,28 @@ const Slider: React.FC<SliderProps> = ({ results }) => {
               </DirectionIcon>
             </DirectionContainer>
 
-            {results
-              ?.slice(OFFSET * page, OFFSET * page + OFFSET)
-              .map((item) => (
-                <RowItem onClick={() => onAboutMovie(item.id)} key={item.id}>
-                  <ImageContainer>
-                    <ItemImage post={ImageUrl(item.poster_path)} />
-                  </ImageContainer>
-                  <ItemTitle>{item.title}</ItemTitle>
-                </RowItem>
-              ))}
+            {movieResults &&
+              movieResults
+                ?.slice(OFFSET * page, OFFSET * page + OFFSET)
+                .map((item) => (
+                  <RowItem onClick={() => onAboutMovie(item.id)} key={item.id}>
+                    <ImageContainer>
+                      <ItemImage post={ImageUrl(item.poster_path)} />
+                    </ImageContainer>
+                    <ItemTitle>{item.title}</ItemTitle>
+                  </RowItem>
+                ))}
+            {TVresults &&
+              TVresults.slice(OFFSET * page, OFFSET * page + OFFSET).map(
+                (item) => (
+                  <RowItem onClick={() => onTVDetail(item.id)} key={item.id}>
+                    <ImageContainer>
+                      <ItemImage post={ImageUrl(item.poster_path)} />
+                    </ImageContainer>
+                    <ItemTitle>{item.name}</ItemTitle>
+                  </RowItem>
+                )
+              )}
           </RowItems>
         </AnimatePresence>
       </SliderCF>

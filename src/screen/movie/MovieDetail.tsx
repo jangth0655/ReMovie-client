@@ -230,11 +230,14 @@ const AboutMovie: React.FC = () => {
                     exit="exit"
                   >
                     <VideoBox>
-                      {movieVideo?.movieVideo ? (
+                      {movieVideo?.movieVideo?.results[0]?.key ? (
                         <VideoPlay
                           width="100%"
                           height="100%"
-                          src={playVideo(movieVideo?.movieVideo.results[0].key)}
+                          src={playVideo(
+                            movieVideo?.movieVideo.results[0].key ||
+                              movieVideo?.movieVideo.results[1].key
+                          )}
                           title={movieVideo?.movieVideo.results[0].name}
                         ></VideoPlay>
                       ) : (

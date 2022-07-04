@@ -242,9 +242,7 @@ const Home: React.FC = () => {
             <TopicContainer>
               <TopicSpanBox>
                 <TopicTitleBox>
-                  <TopicSpan>
-                    Movie, TV shows and much more without limits
-                  </TopicSpan>
+                  <TopicSpan>Movie much more without limits</TopicSpan>
                 </TopicTitleBox>
                 <PlanBox>
                   <Question onClick={scrollQuestion}>Question</Question>
@@ -267,11 +265,11 @@ const Home: React.FC = () => {
             <SliderContainer>
               <div>
                 <BigTitle title="Popular" />
-                <Slider results={popularData?.popularMovies.results} />
+                <Slider movieResults={popularData?.popularMovies.results} />
               </div>
               <div>
                 <BigTitle title="Upcoming" />
-                <Slider results={upcomingData?.upcomingMovies.results} />
+                <Slider movieResults={upcomingData?.upcomingMovies.results} />
               </div>
             </SliderContainer>
             {/* slider upcoming  */}

@@ -5,10 +5,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import client from "./apollo";
 import Home from "./screen/Home";
-import TV from "./screen/tv/TV";
 import { GlobalStyles } from "./styles";
 import { theme } from "./theme";
 import AboutMovie from "./screen/movie/MovieDetail";
+import TVScreen from "./screen/tv/TV";
+import TVDetail from "./screen/tv/TVDetail";
 
 function App() {
   return (
@@ -19,8 +20,9 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/tv" element={<TV />} />
+              <Route path="/tv" element={<TVScreen />} />
               <Route path="/movies/:id" element={<AboutMovie />} />
+              <Route path="/tvs/:id" element={<TVDetail />} />
             </Routes>
           </BrowserRouter>
         </ThemeProvider>
