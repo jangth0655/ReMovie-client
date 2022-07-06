@@ -248,7 +248,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
   return (
     <Section>
       <Helmet>
-        <title>{title} | Movie</title>
+        <title>{title} | REMOVIE</title>
       </Helmet>
       <Nav variants={navScrollVar} initial="top" animate={navAnimation}>
         {/* <NavLayer /> */}

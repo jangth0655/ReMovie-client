@@ -3,11 +3,23 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Movie } from "../interface/movie_interface";
+import { TV } from "../interface/TV_interface";
 import { ImageUrl } from "./Shared";
 
 const MOVIE_RECOMMEND = gql`
   query movieRecommend($id: Int!) {
     movieRecommend(id: $id) {
+      results {
+        id
+        poster_path
+      }
+    }
+  }
+`;
+
+const TV_RECOMMEND = gql`
+  query TVRecommend($id: Int!) {
+    TVRecommend(id: $id) {
       results {
         id
         poster_path
@@ -52,9 +64,19 @@ interface MovieRecommendQuery {
   movieRecommend: Movie;
 }
 
+interface TVRecommendQuery {
+  TVRecommend: TV;
+}
+
 const MovieRecommend: React.FC<MovieRecommendProps> = ({ id }) => {
   const navigate = useNavigate();
-  const { data } = useQuery<MovieRecommendQuery>(MOVIE_RECOMMEND, {
+  const { data: MovieData } = useQuery<MovieRecommendQuery>(MOVIE_RECOMMEND, {
+    variables: {
+      id: id && +id,
+    },
+  });
+
+  const { data: TVData } = useQuery<TVRecommendQuery>(TV_RECOMMEND, {
     variables: {
       id: id && +id,
     },
@@ -67,13 +89,27 @@ const MovieRecommend: React.FC<MovieRecommendProps> = ({ id }) => {
   return (
     <RecommendContainer>
       <RecommendItems>
-        {data?.movieRecommend.results.slice(0, 8).map((item) => (
-          <RecommendItem
-            onClick={() => onMovieDetail(item.id)}
-            key={item.id}
-            post={ImageUrl(item.poster_path)}
-          ></RecommendItem>
-        ))}
+        {MovieData &&
+          MovieData?.movieRecommend.results
+            .slice(0, 8)
+            .map((item) => (
+              <RecommendItem
+                onClick={() => onMovieDetail(item.id)}
+                key={item.id}
+                post={ImageUrl(item.poster_path)}
+              ></RecommendItem>
+            ))}
+
+        {TVData &&
+          TVData?.TVRecommend.results
+            .slice(0, 8)
+            .map((item) => (
+              <RecommendItem
+                onClick={() => onMovieDetail(item.id)}
+                key={item.id}
+                post={ImageUrl(item.poster_path)}
+              ></RecommendItem>
+            ))}
       </RecommendItems>
     </RecommendContainer>
   );

@@ -1,16 +1,28 @@
 import { gql, useQuery } from "@apollo/client";
 import React, { useRef } from "react";
 import styled from "styled-components";
+import { CAST_FRAGMENT } from "../fragment";
 import { MovieCast } from "../interface/movie_interface";
+import { ITVCast } from "../interface/TV_interface";
 import { ImageUrl, Main } from "./Shared";
 
 const MOVIE_CAST = gql`
+  ${CAST_FRAGMENT}
   query movieCast($id: Int!) {
     movieCast(id: $id) {
       cast {
-        id
-        profile_path
-        name
+        ...castFragment
+      }
+    }
+  }
+`;
+
+const TV_CAST = gql`
+  ${CAST_FRAGMENT}
+  query TVCast($id: Int!) {
+    TVCast(id: $id) {
+      cast {
+        ...castFragment
       }
     }
   }
@@ -18,7 +30,7 @@ const MOVIE_CAST = gql`
 
 const CastContainer = styled(Main)`
   position: relative;
-  height: 15rem;
+  height: 17rem;
   padding: 0 ${(props) => props.theme.gap.big};
 `;
 
@@ -47,6 +59,7 @@ const RightIcon = styled(DirectionIcon)`
 const CastItems = styled.div`
   display: flex;
   overflow-x: scroll;
+  padding: 1rem;
 `;
 const CastItem = styled.div`
   margin-right: ${(props) => props.theme.gap.micro};
@@ -61,6 +74,8 @@ const CastImage = styled.div<{ post?: string }>`
   background-image: url(${(props) => props.post});
   background-size: cover;
   background-position: center center;
+  color: ${(props) => props.theme.color.text.dark};
+  font-size: ${(props) => props.theme.fontSize.small};
 `;
 const CastName = styled.span``;
 
@@ -68,12 +83,21 @@ interface CastProps {
   id?: string;
 }
 
-interface CastQuery {
+interface MovieCastQuery {
   movieCast: MovieCast;
+}
+interface TVCastQuery {
+  TVCast: ITVCast;
 }
 
 const Cast: React.FC<CastProps> = ({ id }) => {
-  const { data } = useQuery<CastQuery>(MOVIE_CAST, {
+  const { data: MovieCast } = useQuery<MovieCastQuery>(MOVIE_CAST, {
+    variables: {
+      id: id && +id,
+    },
+  });
+
+  const { data: TVCastData } = useQuery<TVCastQuery>(TV_CAST, {
     variables: {
       id: id && +id,
     },
@@ -110,14 +134,33 @@ const Cast: React.FC<CastProps> = ({ id }) => {
         </RightIcon>
 
         <CastItems ref={containerRef}>
-          {data?.movieCast.cast.slice(0, 10).map((cast) => (
-            <CastItem key={cast.id}>
-              <CastImage post={ImageUrl(cast.profile_path)}></CastImage>
-              <div>
-                <CastName>{cast.name}</CastName>
-              </div>
-            </CastItem>
-          ))}
+          {MovieCast &&
+            MovieCast?.movieCast?.cast?.slice(0, 10).map((cast) => (
+              <CastItem key={cast.id}>
+                {cast.profile_path ? (
+                  <CastImage post={ImageUrl(cast.profile_path)} />
+                ) : (
+                  <CastImage>There is no image :(</CastImage>
+                )}
+                <div>
+                  <CastName>{cast.name}</CastName>
+                </div>
+              </CastItem>
+            ))}
+
+          {TVCastData &&
+            TVCastData?.TVCast?.cast?.slice(0, 10).map((cast) => (
+              <CastItem key={cast.id}>
+                {cast.profile_path ? (
+                  <CastImage post={ImageUrl(cast.profile_path)} />
+                ) : (
+                  <CastImage>There is no image :(</CastImage>
+                )}
+                <div>
+                  <CastName>{cast.name}</CastName>
+                </div>
+              </CastItem>
+            ))}
         </CastItems>
       </CastContainer>
     </div>

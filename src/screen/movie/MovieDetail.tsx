@@ -171,7 +171,7 @@ const AboutMovie: React.FC = () => {
   const [showing, setShowing] = useState(false);
 
   return (
-    <Layout title="About">
+    <Layout title="About/Movie">
       {loading ? (
         "Loading"
       ) : (

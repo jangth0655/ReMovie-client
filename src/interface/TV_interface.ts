@@ -1,4 +1,4 @@
-import { Genres } from "./shared";
+import { Cast, Genres } from "./shared";
 
 export interface Season {
   air_date: number;
@@ -8,6 +8,11 @@ export interface Season {
   overview: string;
   poster_path: string;
   season_number: number;
+}
+
+export interface ITVCast {
+  id: number;
+  cast: Cast[];
 }
 
 export interface TVDetail {

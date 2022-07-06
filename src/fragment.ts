@@ -23,3 +23,11 @@ export const TV_DETAIL_FRAGMENT = gql`
     last_air_date
   }
 `;
+
+export const CAST_FRAGMENT = gql`
+  fragment castFragment on Cast {
+    id
+    profile_path
+    name
+  }
+`;

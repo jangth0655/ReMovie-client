@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { AnimatePresence, motion, Variants } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Layout from "../../components/layout";
 import { Button, ImageUrl, Main } from "../../components/Shared";
 import { gql, useQuery } from "@apollo/client";
@@ -147,14 +147,6 @@ const TrailerPlay = styled(Button)`
 const CastContainer = styled(Main)``;
 const RecommendContainer = styled(Main)``;
 
-const VideoVar: Variants = {
-  initial: { backgroundColor: "rgba(0,0,0,0)" },
-  animate: {
-    backgroundColor: "rgba(0,0,0,0.8)",
-  },
-  exit: { backgroundColor: "rgba(0,0,0,0)" },
-};
-
 interface TVDetailQuery {
   TVDetails: TVDetail;
 }
@@ -166,29 +158,21 @@ interface TVvideoQuery {
 const AboutTV: React.FC = () => {
   const [showing, setShowing] = useState(false);
   const { id } = useParams();
-  const {
-    data: TVDetailData,
-    loading: TVDetailLoaidng,
-    error,
-  } = useQuery<TVDetailQuery>(TV_DETAIL, {
+  const { data: TVDetailData, loading: TVDetailLoaidng } =
+    useQuery<TVDetailQuery>(TV_DETAIL, {
+      variables: {
+        id: id && +id,
+      },
+    });
+
+  const { data: TvVideoData } = useQuery<TVvideoQuery>(TV_VIDEO, {
     variables: {
       id: id && +id,
     },
   });
 
-  const { data: TvVideoData, loading: TvVideoLoading } = useQuery<TVvideoQuery>(
-    TV_VIDEO,
-    {
-      variables: {
-        id: id && +id,
-      },
-    }
-  );
-
-  console.log(TvVideoData);
-
   return (
-    <Layout title="About">
+    <Layout title="About/TV">
       {TVDetailLoaidng ? (
         "Loading"
       ) : (
@@ -247,7 +231,7 @@ const AboutTV: React.FC = () => {
             <TrailerOverLay layoutId={id} />
           </TVContainer>
 
-          {/*  <CastContainer>
+          <CastContainer>
             <BigTitle title="Cast" />
             <Cast id={id} />
           </CastContainer>
@@ -255,7 +239,7 @@ const AboutTV: React.FC = () => {
           <RecommendContainer>
             <BigTitle title="More Like This" />
             <MovieRecommend id={id} />
-          </RecommendContainer> */}
+          </RecommendContainer>
         </>
       )}
     </Layout>

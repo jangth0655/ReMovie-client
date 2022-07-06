@@ -1,13 +1,4 @@
-import { Genres } from "./shared";
-
-interface Cast {
-  id: number;
-  profile_path: string;
-  cast_id: string;
-  character: string;
-  name: string;
-  original_name: string;
-}
+import { Cast, Genres } from "./shared";
 
 export interface MovieCast {
   id: number;
