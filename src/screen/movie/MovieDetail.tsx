@@ -4,19 +4,20 @@ import styled from "styled-components";
 import Layout from "../../components/layout";
 import { gql, useQuery } from "@apollo/client";
 import { MOVIE_DETAIL_FRAGMENT } from "../../fragment";
-import { Button, ImageUrl, Main, playVideo } from "../../components/Shared";
+import { Button, ImageUrl, Main } from "../../components/Shared";
 import { MovieDetail } from "../../interface/movie_interface";
-import { AnimatePresence, motion, Variants } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Cast from "../../components/Cast";
 import BigTitle from "../../components/BigTitle";
 import MovieRecommend from "../../components/Recommend";
 import { Video } from "../../interface/shared";
+import VideoComponent from "../../components/Video";
 
 const MOVIE_DETAIL = gql`
   ${MOVIE_DETAIL_FRAGMENT}
   query movieDetail($id: Int!) {
     movieDetail(id: $id) {
-      ...movieDetail
+      ...movieDetailFragment
       genres {
         name
       }
@@ -143,45 +144,8 @@ const TrailerPlay = styled(Button)`
   }
 `;
 
-const VideoBox = styled(motion.div)`
-  width: 20rem;
-  height: 20rem;
-  background-color: black;
-  z-index: 10;
-  border-radius: ${(props) => props.theme.borderRadius.lg};
-`;
-
-const VideoOverlay = styled(motion.div)`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: red;
-  display: flex;
-  justify-content: end;
-  align-items: center;
-  padding-right: ${(props) => props.theme.gap.medium};
-  @media screen and (max-width: 768px) {
-    justify-content: center;
-    align-items: center;
-  }
-`;
-
-const VideoPlay = styled.iframe`
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-`;
-
 const CastContainer = styled(Main)``;
 const RecommendContainer = styled(Main)``;
-
-const VideoVar: Variants = {
-  initial: { backgroundColor: "rgba(0,0,0,0)" },
-  animate: {
-    backgroundColor: "rgba(0,0,0,0.8)",
-  },
-  exit: { backgroundColor: "rgba(0,0,0,0)" },
-};
 
 interface MovieDetailProps {
   movieDetail?: MovieDetail;
@@ -222,29 +186,13 @@ const AboutMovie: React.FC = () => {
             <MovieLayer onClick={() => setShowing(false)}>
               <AnimatePresence>
                 {showing && (
-                  <VideoOverlay
-                    layoutId={id}
-                    variants={VideoVar}
-                    initial="initial"
-                    animate="animate"
-                    exit="exit"
-                  >
-                    <VideoBox>
-                      {movieVideo?.movieVideo?.results[0]?.key ? (
-                        <VideoPlay
-                          width="100%"
-                          height="100%"
-                          src={playVideo(
-                            movieVideo?.movieVideo.results[0].key ||
-                              movieVideo?.movieVideo.results[1].key
-                          )}
-                          title={movieVideo?.movieVideo.results[0].name}
-                        ></VideoPlay>
-                      ) : (
-                        <span>sorry... there is not video</span>
-                      )}
-                    </VideoBox>
-                  </VideoOverlay>
+                  <VideoComponent
+                    results={
+                      movieVideo?.movieVideo.results[0] ||
+                      movieVideo?.movieVideo.results[1]
+                    }
+                    id={id}
+                  />
                 )}
               </AnimatePresence>
             </MovieLayer>

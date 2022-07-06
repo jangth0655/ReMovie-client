@@ -38,7 +38,6 @@ const NOW_TV = gql`
 const Section = styled.section``;
 
 const Topic = styled.div`
-  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;

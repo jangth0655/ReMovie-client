@@ -115,6 +115,13 @@ const Slider: React.FC<SliderProps> = ({ movieResults, TVresults }) => {
         ? setPage((prev) => (prev === 0 ? maxPage : prev - 1))
         : setPage((prev) => (prev === maxPage ? 0 : prev + 1));
     }
+    if (TVresults) {
+      const totalMovies = TVresults?.length - 1;
+      const maxPage = Math.floor(totalMovies / OFFSET);
+      back
+        ? setPage((prev) => (prev === 0 ? maxPage : prev - 1))
+        : setPage((prev) => (prev === maxPage ? 0 : prev + 1));
+    }
   };
 
   const right = () => setBack(false);

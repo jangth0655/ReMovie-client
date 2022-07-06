@@ -1,13 +1,25 @@
 import { gql } from "@apollo/client";
 export const MOVIE_DETAIL_FRAGMENT = gql`
-  fragment movieDetail on MovieDetail {
+  fragment movieDetailFragment on MovieDetail {
     poster_path
     backdrop_path
     overview
     id
     title
-    video
     vote_average
     release_date
+  }
+`;
+
+export const TV_DETAIL_FRAGMENT = gql`
+  fragment TVDetailFragment on TVDetail {
+    poster_path
+    backdrop_path
+    overview
+    id
+    name
+    vote_average
+    first_air_date
+    last_air_date
   }
 `;
