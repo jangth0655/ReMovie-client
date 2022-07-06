@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { AnimatePresence, motion } from "framer-motion";
 import Layout from "../../components/layout";
@@ -156,6 +156,7 @@ interface TVvideoQuery {
 }
 
 const AboutTV: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [showing, setShowing] = useState(false);
   const { id } = useParams();
   const { data: TVDetailData, loading: TVDetailLoaidng } =
@@ -171,6 +172,13 @@ const AboutTV: React.FC = () => {
     },
   });
 
+  const topScroll = () => {
+    containerRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   return (
     <Layout title="About/TV">
       {TVDetailLoaidng ? (
@@ -178,6 +186,7 @@ const AboutTV: React.FC = () => {
       ) : (
         <>
           <TVContainer
+            ref={containerRef}
             poster={ImageUrl(
               TVDetailData?.TVDetails.backdrop_path
                 ? TVDetailData?.TVDetails.backdrop_path
@@ -219,7 +228,12 @@ const AboutTV: React.FC = () => {
               </MovieDescription>
             </TVInfoContainer>
 
-            <MovieTrailer onClick={() => setShowing((prev) => !prev)}>
+            <MovieTrailer
+              onClick={() => {
+                setShowing((prev) => !prev);
+                topScroll();
+              }}
+            >
               <TrailerTitle>Trailer</TrailerTitle>
               <TrailerPlay>
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">

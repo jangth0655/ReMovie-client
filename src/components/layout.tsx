@@ -8,6 +8,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Search from "./Search";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -35,39 +36,7 @@ const Col = styled.div`
   justify-content: space-between;
 `;
 
-const SearchContainer = styled.form`
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  position: relative;
-`;
-
-const SearchIcon = styled(motion.svg)`
-  width: 1.2rem;
-  height: 1.2rem;
-  cursor: pointer;
-  position: absolute;
-  right: 0.3rem;
-`;
-
-const SearchInput = styled(motion.input)`
-  transform-origin: top right;
-  border: 1px solid ${(props) => props.theme.color.text.dark};
-  border-radius: ${(props) => props.theme.borderRadius.lg};
-  padding: 0.3rem;
-  margin-right: ${(props) => props.theme.gap.micro};
-  color: ${(props) => props.theme.color.text.main};
-  padding-left: 2.5rem;
-  width: 15rem;
-  &::placeholder {
-    font-size: ${(props) => props.theme.fontSize.micro};
-    color: ${(props) => props.theme.color.text.dark};
-  }
-  &:focus {
-    border-color: ${(props) => props.theme.color.active.strong};
-  }
-`;
+const SearchContainer = styled.div``;
 
 const LogoName = styled.div``;
 
@@ -171,18 +140,6 @@ const navVariant: Variants = {
   }),
 };
 
-const searchVariant: Variants = {
-  initial: {
-    scaleX: 0,
-  },
-  animate: (search: boolean) => ({
-    scaleX: search ? 1 : 0,
-    transition: {
-      type: "linear",
-    },
-  }),
-};
-
 const navScrollVar: Variants = {
   top: {
     backgroundColor: "rgba(0,0,0,0)",
@@ -196,7 +153,6 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
   const homeMatch = useMatch("/");
   const tvMatch = useMatch("/tv");
   const [active, setActive] = useState(false);
-  const [search, setSearch] = useState(false);
   const [windowSize, setWindowSize] = useState<number>(0);
   const navigate = useNavigate();
   const navAnimation = useAnimation();
@@ -211,10 +167,6 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
       }
     });
   }, [navAnimation, scrollY]);
-
-  const onSearch = () => {
-    setSearch((prev) => !prev);
-  };
 
   const handleWindowSize = useCallback(() => {
     setWindowSize(window.innerWidth);
@@ -312,23 +264,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
         )}
 
         <SearchContainer>
-          <SearchInput
-            variants={searchVariant}
-            initial="initial"
-            animate="animate"
-            custom={search}
-            type="text"
-            placeholder="Search"
-          />
-          <SearchIcon
-            onClick={() => onSearch()}
-            viewBox="0 0 20 20"
-            fill="rgb(236 72 153)"
-            animate={{ x: search ? -210 : 0 }}
-            transition={{ type: "linear" }}
-          >
-            <path d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" />
-          </SearchIcon>
+          <Search />
         </SearchContainer>
       </Nav>
 

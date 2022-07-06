@@ -10,6 +10,7 @@ import { theme } from "./theme";
 import AboutMovie from "./screen/movie/MovieDetail";
 import TVScreen from "./screen/tv/TV";
 import TVDetail from "./screen/tv/TVDetail";
+import SearchPage from "./screen/SearchPage";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <Route path="/tv" element={<TVScreen />} />
               <Route path="/movies/:id" element={<AboutMovie />} />
               <Route path="/tvs/:id" element={<TVDetail />} />
+              <Route path="/search/:keyword" element={<SearchPage />} />
             </Routes>
           </BrowserRouter>
         </ThemeProvider>

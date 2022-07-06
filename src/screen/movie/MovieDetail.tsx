@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../../components/layout";
@@ -156,6 +156,7 @@ interface MovieVideoQuery {
 }
 
 const AboutMovie: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const { id } = useParams();
   const { data, loading } = useQuery<MovieDetailProps>(MOVIE_DETAIL, {
     variables: {
@@ -168,6 +169,13 @@ const AboutMovie: React.FC = () => {
     },
   });
 
+  const topScroll = () => {
+    containerRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   const [showing, setShowing] = useState(false);
 
   return (
@@ -177,6 +185,7 @@ const AboutMovie: React.FC = () => {
       ) : (
         <>
           <MovieContainer
+            ref={containerRef}
             poster={ImageUrl(
               data?.movieDetail?.backdrop_path
                 ? data?.movieDetail?.backdrop_path
@@ -216,7 +225,12 @@ const AboutMovie: React.FC = () => {
               </MovieDescription>
             </MovieInfoContainer>
 
-            <MovieTrailer onClick={() => setShowing((prev) => !prev)}>
+            <MovieTrailer
+              onClick={() => {
+                setShowing((prev) => !prev);
+                topScroll();
+              }}
+            >
               <TrailerTitle>Trailer</TrailerTitle>
               <TrailerPlay>
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
