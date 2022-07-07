@@ -21,6 +21,7 @@ const TV_DETAIL = gql`
       genres {
         name
       }
+      isLiked
     }
   }
 `;
@@ -105,14 +106,32 @@ const VoteIcon = styled.svg`
   height: 1rem;
   color: yellow;
 `;
-const MovieDate = styled.span``;
-const MovieGenres = styled.span``;
+const TVDate = styled.span``;
+const TVGenres = styled.span``;
 
-const MovieDescription = styled.p`
+const TVDescription = styled.p`
   line-height: 1.5;
   font-size: ${(props) => props.theme.fontSize.small};
   @media screen and (max-width: 768px) {
   }
+`;
+
+const LikeBox = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: ${(props) => props.theme.gap.small};
+`;
+const Like = styled.svg<{ like?: boolean }>`
+  cursor: pointer;
+  width: 1.2rem;
+  height: 1.2rem;
+  color: ${(props) =>
+    props.like ? props.theme.color.active.strong : props.theme.color.text.dark};
+`;
+const LikeSpan = styled.span`
+  color: ${(props) => props.theme.color.text.main};
+  font-size: ${(props) => props.theme.fontSize.small};
+  margin-left: ${(props) => props.theme.gap.micro};
 `;
 
 const MovieTrailer = styled(motion.div)`
@@ -159,12 +178,29 @@ const AboutTV: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [showing, setShowing] = useState(false);
   const { id } = useParams();
-  const { data: TVDetailData, loading: TVDetailLoaidng } =
-    useQuery<TVDetailQuery>(TV_DETAIL, {
-      variables: {
-        id: id && +id,
+  const {
+    data: TVDetailData,
+    loading: TVDetailLoaidng,
+    client: { cache },
+  } = useQuery<TVDetailQuery>(TV_DETAIL, {
+    variables: {
+      id: id && +id,
+    },
+  });
+
+  const onLike = () => {
+    cache.writeFragment({
+      id: `TVDetail:${id && +id}`,
+      fragment: gql`
+        fragment TVdetail on TVDetail {
+          isLiked
+        }
+      `,
+      data: {
+        isLiked: !TVDetailData?.TVDetails.isLiked,
       },
     });
+  };
 
   const { data: TvVideoData } = useQuery<TVvideoQuery>(TV_VIDEO, {
     variables: {
@@ -218,14 +254,25 @@ const AboutTV: React.FC = () => {
                   </VoteIcon>
                   <VoteSpan>{TVDetailData?.TVDetails.vote_average}</VoteSpan>
                 </TVVoteBox>
-                <MovieDate>{TVDetailData?.TVDetails.first_air_date}</MovieDate>
-                <MovieGenres>
-                  {TVDetailData?.TVDetails.genres[0].name}
-                </MovieGenres>
+                <TVDate>{TVDetailData?.TVDetails.first_air_date}</TVDate>
+                <TVGenres>{TVDetailData?.TVDetails.genres[0].name}</TVGenres>
               </TVInfoBox>
-              <MovieDescription>
+              <TVDescription>
                 {`${TVDetailData?.TVDetails?.overview?.slice(0, 120)} ...`}
-              </MovieDescription>
+              </TVDescription>
+              <LikeBox>
+                <Like
+                  onClick={() => onLike()}
+                  like={TVDetailData?.TVDetails?.isLiked}
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" />
+                </Like>
+                <LikeSpan>
+                  {TVDetailData?.TVDetails?.isLiked ? "Like" : "UnLike"}
+                </LikeSpan>
+              </LikeBox>
             </TVInfoContainer>
 
             <MovieTrailer

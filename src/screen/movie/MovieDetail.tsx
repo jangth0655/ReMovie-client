@@ -21,6 +21,7 @@ const MOVIE_DETAIL = gql`
       genres {
         name
       }
+      isLiked
     }
   }
 `;
@@ -115,6 +116,24 @@ const MovieDescription = styled.p`
   }
 `;
 
+const LikeBox = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: ${(props) => props.theme.gap.small};
+`;
+const Like = styled.svg<{ like?: boolean }>`
+  cursor: pointer;
+  width: 1.2rem;
+  height: 1.2rem;
+  color: ${(props) =>
+    props.like ? props.theme.color.active.strong : props.theme.color.text.dark};
+`;
+const LikeSpan = styled.span`
+  color: ${(props) => props.theme.color.text.main};
+  font-size: ${(props) => props.theme.fontSize.small};
+  margin-left: ${(props) => props.theme.gap.micro};
+`;
+
 const MovieTrailer = styled(motion.div)`
   position: absolute;
   right: ${(props) => props.theme.gap.small};
@@ -158,7 +177,11 @@ interface MovieVideoQuery {
 const AboutMovie: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { id } = useParams();
-  const { data, loading } = useQuery<MovieDetailProps>(MOVIE_DETAIL, {
+  const {
+    data,
+    loading,
+    client: { cache },
+  } = useQuery<MovieDetailProps>(MOVIE_DETAIL, {
     variables: {
       id: id && +id,
     },
@@ -177,6 +200,20 @@ const AboutMovie: React.FC = () => {
   };
 
   const [showing, setShowing] = useState(false);
+
+  const onLike = () => {
+    cache.writeFragment({
+      id: `MovieDetail:${id && +id}`,
+      fragment: gql`
+        fragment movieDetail on MovieDetail {
+          isLiked
+        }
+      `,
+      data: {
+        isLiked: !data?.movieDetail?.isLiked,
+      },
+    });
+  };
 
   return (
     <Layout title="About/Movie">
@@ -223,6 +260,19 @@ const AboutMovie: React.FC = () => {
               <MovieDescription>
                 {`${data?.movieDetail?.overview.slice(0, 120)} ...`}
               </MovieDescription>
+              <LikeBox>
+                <Like
+                  like={data?.movieDetail?.isLiked}
+                  onClick={() => onLike()}
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" />
+                </Like>
+                <LikeSpan>
+                  {data?.movieDetail?.isLiked ? "Like" : "UnLike"}
+                </LikeSpan>
+              </LikeBox>
             </MovieInfoContainer>
 
             <MovieTrailer

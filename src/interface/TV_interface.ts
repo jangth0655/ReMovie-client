@@ -26,6 +26,7 @@ export interface TVDetail {
   genres: Genres[];
   vote_average: number;
   seasons: Season[];
+  isLiked: boolean;
 }
 
 export interface TVResults {
