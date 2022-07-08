@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { MovieResult } from "../interface/movie_interface";
 import { ImageUrl } from "./Shared";
@@ -19,9 +19,12 @@ const RowItems = styled(motion.div)`
   position: absolute;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 0.7em;
+  gap: 0.7rem;
   width: 100%;
   height: 100%;
+  @media screen and (max-width: 460px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 const RowItem = styled.div`
@@ -54,6 +57,10 @@ const ItemImage = styled.div<{ post?: string }>`
 const ItemTitle = styled.div`
   font-size: ${(props) => props.theme.fontSize.small};
   padding: ${(props) => props.theme.gap.micro} 0;
+  @media screen and (max-width: 550px) {
+    font-size: ${(props) => props.theme.fontSize.micro};
+    padding: ${(props) => props.theme.gap.micro} 0;
+  }
 `;
 
 const DirectionContainer = styled.div`
@@ -93,11 +100,24 @@ const rowVariant: Variants = {
   }),
 };
 
-const OFFSET = 5;
 const Slider: React.FC<SliderProps> = ({ movieResults, TVresults }) => {
   const [page, setPage] = useState(0);
   const [back, setBack] = useState(false);
   const navigate = useNavigate();
+  const [windowSize, setWindowSize] = useState(0);
+
+  const handleWindowSize = useCallback(() => {
+    setWindowSize(window.innerWidth);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("resize", handleWindowSize);
+    return () => {
+      window.removeEventListener("resize", handleWindowSize);
+    };
+  }, [handleWindowSize]);
+
+  const OFFSET = windowSize < 460 ? 2 : 5;
 
   const onAboutMovie = (id: number) => {
     navigate(`/movies/${id}`);
