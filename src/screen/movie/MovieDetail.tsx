@@ -68,6 +68,9 @@ const MovieInfoContainer = styled.div`
   height: 50%;
   z-index: 1;
   padding: 0 ${(props) => props.theme.gap.small};
+  @media screen and (max-width: 425px) {
+    height: 100%;
+  }
 `;
 
 const MovieTitleBox = styled.div`
