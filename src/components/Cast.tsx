@@ -1,10 +1,12 @@
 import { gql, useQuery } from "@apollo/client";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { CAST_FRAGMENT } from "../fragment";
 import { MovieCast } from "../interface/movie_interface";
 import { ITVCast } from "../interface/TV_interface";
 import { ImageUrl, Main } from "./Shared";
+import { AnimatePresence, motion, Variants } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const MOVIE_CAST = gql`
   ${CAST_FRAGMENT}
@@ -62,9 +64,14 @@ const CastItems = styled.div`
   padding: 1rem;
 `;
 const CastItem = styled.div`
-  margin-right: ${(props) => props.theme.gap.micro};
+  cursor: pointer;
+  margin-right: ${(props) => props.theme.gap.small};
+  transition: ${(props) => props.theme.transition.all};
   &:last-child {
     margin-right: 0;
+  }
+  &:hover {
+    transform: scale(1.1);
   }
 `;
 const CastImage = styled.div<{ post?: string }>`
@@ -90,7 +97,17 @@ interface TVCastQuery {
   TVCast: ITVCast;
 }
 
+const ActorVariant: Variants = {
+  initial: {
+    scaleY: 0,
+  },
+  animate: {
+    scaleY: 1,
+  },
+};
+
 const Cast: React.FC<CastProps> = ({ id }) => {
+  const navigate = useNavigate();
   const { data: MovieCast } = useQuery<MovieCastQuery>(MOVIE_CAST, {
     variables: {
       id: id && +id,
@@ -111,6 +128,10 @@ const Cast: React.FC<CastProps> = ({ id }) => {
 
   const scrollLeft = () => {
     containerRef.current?.scrollBy({ left: -350, behavior: "smooth" });
+  };
+
+  const onActor = (id: number) => {
+    navigate(`/actors/${id}`);
   };
 
   return (
@@ -136,7 +157,7 @@ const Cast: React.FC<CastProps> = ({ id }) => {
         <CastItems ref={containerRef}>
           {MovieCast &&
             MovieCast?.movieCast?.cast?.slice(0, 10).map((cast) => (
-              <CastItem key={cast.id}>
+              <CastItem key={cast.id} onClick={() => onActor(cast.id)}>
                 {cast.profile_path ? (
                   <CastImage post={ImageUrl(cast.profile_path)} />
                 ) : (
@@ -150,7 +171,7 @@ const Cast: React.FC<CastProps> = ({ id }) => {
 
           {TVCastData &&
             TVCastData?.TVCast?.cast?.slice(0, 10).map((cast) => (
-              <CastItem key={cast.id}>
+              <CastItem key={cast.id} onClick={() => onActor(cast.id)}>
                 {cast.profile_path ? (
                   <CastImage post={ImageUrl(cast.profile_path)} />
                 ) : (

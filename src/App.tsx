@@ -11,6 +11,7 @@ import AboutMovie from "./screen/movie/MovieDetail";
 import TVScreen from "./screen/tv/TV";
 import TVDetail from "./screen/tv/TVDetail";
 import SearchPage from "./screen/SearchPage";
+import ActorDetail from "./screen/actor/ActorDetail";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
               <Route path="/movies/:id" element={<AboutMovie />} />
               <Route path="/tvs/:id" element={<TVDetail />} />
               <Route path="/search/:keyword" element={<SearchPage />} />
+              <Route path="/actors/:id" element={<ActorDetail />} />
             </Routes>
           </BrowserRouter>
         </ThemeProvider>

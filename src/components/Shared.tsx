@@ -15,7 +15,7 @@ export const Button = styled.span`
   }
 `;
 
-export const ImageUrl = (path: string, size?: string) => {
+export const ImageUrl = (path?: string, size?: string) => {
   return `https://image.tmdb.org/t/p/${size ? size : "original"}${path}`;
 };
 
