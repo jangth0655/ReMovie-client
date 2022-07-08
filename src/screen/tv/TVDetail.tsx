@@ -258,7 +258,7 @@ const AboutTV: React.FC = () => {
                 <TVGenres>{TVDetailData?.TVDetails.genres[0].name}</TVGenres>
               </TVInfoBox>
               <TVDescription>
-                {`${TVDetailData?.TVDetails?.overview?.slice(0, 120)} ...`}
+                {`${TVDetailData?.TVDetails?.overview?.slice(0, 100)} ...`}
               </TVDescription>
               <LikeBox>
                 <Like

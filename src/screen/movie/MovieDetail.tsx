@@ -258,7 +258,7 @@ const AboutMovie: React.FC = () => {
                 <MovieGenres>{data?.movieDetail?.genres[0].name}</MovieGenres>
               </MovieInfoBox>
               <MovieDescription>
-                {`${data?.movieDetail?.overview.slice(0, 120)} ...`}
+                {`${data?.movieDetail?.overview.slice(0, 100)} ...`}
               </MovieDescription>
               <LikeBox>
                 <Like
