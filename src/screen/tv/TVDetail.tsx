@@ -70,6 +70,7 @@ const TVInfoContainer = styled.div`
   padding: 0 ${(props) => props.theme.gap.small};
   @media screen and (max-width: 425px) {
     height: 100%;
+    padding-top: 20%;
   }
 `;
 
