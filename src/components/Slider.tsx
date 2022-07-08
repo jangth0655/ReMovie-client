@@ -117,6 +117,10 @@ const Slider: React.FC<SliderProps> = ({ movieResults, TVresults }) => {
     };
   }, [handleWindowSize]);
 
+  useEffect(() => {
+    setWindowSize(window.innerWidth);
+  }, []);
+
   const OFFSET = windowSize < 460 ? 2 : 5;
 
   const onAboutMovie = (id: number) => {
