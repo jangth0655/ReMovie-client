@@ -58,6 +58,7 @@ const RecommendItem = styled.div<{ post?: string }>`
 
 interface MovieRecommendProps {
   id?: string;
+  topScroll?: () => void;
 }
 
 interface MovieRecommendQuery {
@@ -68,7 +69,7 @@ interface TVRecommendQuery {
   TVRecommend: TV;
 }
 
-const MovieRecommend: React.FC<MovieRecommendProps> = ({ id }) => {
+const MovieRecommend: React.FC<MovieRecommendProps> = ({ id, topScroll }) => {
   const navigate = useNavigate();
   const { data: MovieData } = useQuery<MovieRecommendQuery>(MOVIE_RECOMMEND, {
     variables: {
@@ -83,6 +84,7 @@ const MovieRecommend: React.FC<MovieRecommendProps> = ({ id }) => {
   });
 
   const onMovieDetail = (id: number) => {
+    topScroll && topScroll();
     navigate(`/movies/${id}`);
   };
 

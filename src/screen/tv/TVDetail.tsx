@@ -302,7 +302,7 @@ const AboutTV: React.FC = () => {
 
           <RecommendContainer>
             <BigTitle title="More Like This" />
-            <MovieRecommend id={id} />
+            <MovieRecommend topScroll={topScroll} id={id} />
           </RecommendContainer>
         </>
       )}

@@ -198,7 +198,6 @@ const AboutMovie: React.FC = () => {
 
   const topScroll = () => {
     containerRef.current?.scrollIntoView({
-      behavior: "smooth",
       block: "start",
     });
   };
@@ -305,7 +304,7 @@ const AboutMovie: React.FC = () => {
           {/* recommend */}
           <RecommendContainer>
             <BigTitle title="More Like This" />
-            <MovieRecommend id={id} />
+            <MovieRecommend topScroll={topScroll} id={id} />
           </RecommendContainer>
         </>
       )}
