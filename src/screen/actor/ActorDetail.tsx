@@ -31,7 +31,7 @@ const Container = styled.div<{ post?: string }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
 `;
 
 const ActorImageBox = styled.div`
@@ -55,6 +55,10 @@ const InfoBox = styled.div`
   width: 100%;
   color: ${(props) => props.theme.color.text.dark};
   padding-right: ${(props) => props.theme.gap.medium};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Name = styled.div`

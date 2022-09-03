@@ -38,7 +38,9 @@ const Col = styled.div`
 
 const SearchContainer = styled.div``;
 
-const LogoName = styled.div``;
+const LogoName = styled.div`
+  cursor: pointer;
+`;
 
 const Name = styled.span<{ active?: boolean }>`
   font-size: ${(props) => props.theme.fontSize.big};
@@ -215,7 +217,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
           </Svg>
         ) : (
           <Col>
-            <LogoName>
+            <LogoName onClick={() => onHome()}>
               <Name active={true}>Re</Name>
               <Name>Movie</Name>
             </LogoName>
