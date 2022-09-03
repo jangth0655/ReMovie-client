@@ -189,6 +189,7 @@ const AboutMovie: React.FC = () => {
       id: id && +id,
     },
   });
+
   const { data: movieVideo } = useQuery<MovieVideoQuery>(MOVIE_VIDEO, {
     variables: {
       id: id && +id,

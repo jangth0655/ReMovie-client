@@ -4,7 +4,7 @@ import {
   useViewportScroll,
   Variants,
 } from "framer-motion";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -159,6 +159,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
   const navigate = useNavigate();
   const navAnimation = useAnimation();
   const { scrollY } = useViewportScroll();
+  const initialPageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     scrollY.onChange(() => {
@@ -185,6 +186,13 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
     setWindowSize(window.innerWidth);
   }, []);
 
+  useEffect(() => {
+    initialPageRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, []);
+
   const showingNavTitle = () => {
     setActive((prev) => !prev);
   };
@@ -200,7 +208,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
   };
 
   return (
-    <Section>
+    <Section ref={initialPageRef}>
       <Helmet>
         <title>{title} | REMOVIE</title>
       </Helmet>
