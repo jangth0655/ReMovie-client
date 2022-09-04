@@ -237,8 +237,8 @@ const AboutMovie: React.FC = () => {
                 {showing && (
                   <VideoComponent
                     results={
-                      movieVideo?.movieVideo.results[0] ||
-                      movieVideo?.movieVideo.results[1]
+                      movieVideo?.movieVideo?.results[0] ||
+                      movieVideo?.movieVideo?.results[1]
                     }
                     id={id}
                   />
@@ -258,7 +258,7 @@ const AboutMovie: React.FC = () => {
                   <VoteSpan>{data?.movieDetail?.vote_average}</VoteSpan>
                 </MovieVoteBox>
                 <MovieDate>{data?.movieDetail?.release_date}</MovieDate>
-                <MovieGenres>{data?.movieDetail?.genres[0].name}</MovieGenres>
+                <MovieGenres>{data?.movieDetail?.genres[0]?.name}</MovieGenres>
               </MovieInfoBox>
               <MovieDescription>
                 {`${data?.movieDetail?.overview.slice(0, 100)} ...`}

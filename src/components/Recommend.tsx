@@ -92,24 +92,24 @@ const MovieRecommend: React.FC<MovieRecommendProps> = ({ id, topScroll }) => {
     <RecommendContainer>
       <RecommendItems>
         {MovieData &&
-          MovieData?.movieRecommend.results
+          MovieData?.movieRecommend?.results
             .slice(0, 8)
             .map((item) => (
               <RecommendItem
                 onClick={() => onMovieDetail(item.id)}
                 key={item.id}
-                post={ImageUrl(item.poster_path)}
+                post={ImageUrl(item?.poster_path)}
               ></RecommendItem>
             ))}
 
         {TVData &&
-          TVData?.TVRecommend.results
+          TVData?.TVRecommend?.results
             .slice(0, 8)
             .map((item) => (
               <RecommendItem
                 onClick={() => onMovieDetail(item.id)}
                 key={item.id}
-                post={ImageUrl(item.poster_path)}
+                post={ImageUrl(item?.poster_path)}
               ></RecommendItem>
             ))}
       </RecommendItems>
