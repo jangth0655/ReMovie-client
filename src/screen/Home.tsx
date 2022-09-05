@@ -261,7 +261,6 @@ const Home: React.FC = () => {
               </TitleImageBox>
             </TopicContainer>
 
-            {/* slider popular */}
             <SliderContainer>
               <div>
                 <BigTitle title="Popular" />
@@ -272,11 +271,9 @@ const Home: React.FC = () => {
                 <Slider movieResults={upcomingData?.upcomingMovies.results} />
               </div>
             </SliderContainer>
-            {/* slider upcoming  */}
           </Topic>
 
           <Main>
-            {/* Tariff plans */}
             <TariffContainer ref={tariffRef}>
               <BigTitle title="Tariff plans" />
               <TariffBox style={{ display: "flex" }}>
@@ -286,7 +283,7 @@ const Home: React.FC = () => {
               </TariffBox>
             </TariffContainer>
           </Main>
-          {/* Frequently asked question */}
+
           <Main>
             <QuestionContainer ref={questionRef}>
               <BigTitle title="Frequently asked questions" />

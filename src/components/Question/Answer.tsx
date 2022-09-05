@@ -20,7 +20,7 @@ interface AnswerProps {
 const Answer: React.FC<AnswerProps> = ({ answer }) => {
   return (
     <AnswerBox>
-      <AnswerSpan>Answer</AnswerSpan>
+      <AnswerSpan>{answer}</AnswerSpan>
     </AnswerBox>
   );
 };

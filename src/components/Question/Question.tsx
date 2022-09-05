@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Answer from "./Answer";
+import { IQuestion } from "./Questions";
 
 const Container = styled.div<{ showing?: boolean }>`
   width: 100%;
@@ -34,17 +35,16 @@ const PlusIcon = styled(Icon)``;
 const CloseIcon = styled(Icon)``;
 
 interface QuestionProps {
-  question: string;
+  question: IQuestion;
 }
 const Question: React.FC<QuestionProps> = ({ question }) => {
   const [showing, setShowing] = useState(false);
-
   const onShowing = () => setShowing(true);
   const onClose = () => setShowing(false);
   return (
     <Container showing={showing}>
       <QuestionItem>
-        <QuestionCF>{question}</QuestionCF>
+        <QuestionCF>{question.question}</QuestionCF>
         {showing ? (
           <CloseIcon
             onClick={onClose}
@@ -66,7 +66,7 @@ const Question: React.FC<QuestionProps> = ({ question }) => {
           </PlusIcon>
         )}
       </QuestionItem>
-      {showing ? <Answer /> : ""}
+      {showing ? <Answer answer={question.answer} /> : ""}
     </Container>
   );
 };

@@ -8,7 +8,6 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: start;
-  padding: 1rem 0.5rem;
   width: 100%;
   height: 33rem;
 `;
@@ -18,7 +17,7 @@ const QuestionBox = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 50%;
+  width: 60%;
   height: 100%;
   @media screen and (max-width: 768px) {
     width: 100%;
@@ -44,25 +43,32 @@ const Layer = styled.div`
   background-color: rgba(0, 0, 0, 0.8);
 `;
 
-const questions = [
+export type IQuestion = {
+  question: string;
+  answer: string;
+  id: string;
+};
+
+const questions: IQuestion[] = [
   {
     question: "Where can I watch",
+    answer: "다양한 디바이스에서 언제 어디서나 시청할 수 있습니다.",
     id: "q1",
   },
   {
-    question: "Where can I watch",
-    id: "q2",
-  },
-  {
     question: "How do I cancel",
+    answer: "홈페이지의 마이페이지 하단에서 해지가 가능합니다.",
     id: "q3",
   },
   {
     question: "What can I watch on REMovie",
+    answer:
+      "장편영화, 다큐멘터리, TV, 애니메이션 등 수만읂 콘텐츠들을 확보하고 있습니다.",
     id: "q4",
   },
   {
     question: "Is REMovie suitable for kids",
+    answer: "다양한 연령층을 고려하여 시청할 수 있습니다.",
     id: "q5",
   },
 ];
@@ -71,12 +77,12 @@ const Questions: React.FC = () => {
   return (
     <Container>
       <QuestionBox>
-        {questions.map((item) => (
-          <Question key={item.id} question={item.question} />
+        {questions.map((question) => (
+          <Question key={question.id} question={question} />
         ))}
       </QuestionBox>
       <Image image={coffee}>
-        <Layer></Layer>
+        <Layer />
       </Image>
     </Container>
   );
